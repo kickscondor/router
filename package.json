@@ -1,5 +1,5 @@
 {
-  "name": "@hyperapp/router",
+  "name": "@kickscondor/router",
   "description": "Declarative routing for Hyperapp V1 using the History API.",
   "version": "0.7.2",
   "main": "dist/router.js",
