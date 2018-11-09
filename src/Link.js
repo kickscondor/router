@@ -19,6 +19,9 @@ export function Link(props, children) {
     delete props.location
 
     props.href = to
+    if (location.pathname === to) {
+      props.class = `active ${props.class}`
+    }
     props.onclick = function(e) {
       if (onclick) {
         onclick(e)
