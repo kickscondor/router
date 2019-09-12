@@ -14,38 +14,63 @@ function wrapHistory(keys) {
   }, null)
 }
 
-export var location = {
-  state: {
-    pathname: window.location.pathname,
-    previous: window.location.pathname
-  },
-  actions: {
-    go: function(pathname) {
-      history.pushState(null, "", pathname)
+function windowPathname(state) {
+  return state.hashRouting ?
+    (window.location.hash.substring(2) || "/") : window.location.pathname
+}
+
+export function location(opts) {
+  opts = opts || {}
+  let pathname = windowPathname(opts)
+  return {
+    state: {
+      pathname,
+      previous: pathname,
+      rendered: false,
+      hashRouting: false,
+      ...opts
     },
-    set: function(data) {
-      return data
-    }
-  },
-  subscribe: function(actions) {
-    function handleLocationChange(e) {
-      actions.set({
-        pathname: window.location.pathname,
-        previous: e.detail
-          ? (window.location.previous = e.detail)
-          : window.location.previous
-      })
-    }
+    actions: {
+      go: function(pathname) {
+        if (!opts.hashRouting)
+          history.pushState(null, "", pathname)
+        else
+          window.location = "#!" + pathname
+      },
+      set: function(data) {
+        return data
+      }
+    },
+    subscribe: function(actions) {
+      function handleLocationChange(e) {
+        let pathname = windowPathname(opts)
+        actions.set({
+          pathname,
+          previous: e.detail
+            ? (window.location.previous = e.detail)
+            : window.location.previous,
+          rendered: false
+        })
+      }
 
-    var unwrap = wrapHistory(["pushState", "replaceState"])
+      var unwrap
+      if (opts.hashRouting) {
+        addEventListener("hashchange", handleLocationChange)
+      } else {
+        unwrap = wrapHistory(["pushState", "replaceState"])
+        addEventListener("pushstate", handleLocationChange)
+        addEventListener("popstate", handleLocationChange)
+      }
 
-    addEventListener("pushstate", handleLocationChange)
-    addEventListener("popstate", handleLocationChange)
-
-    return function() {
-      removeEventListener("pushstate", handleLocationChange)
-      removeEventListener("popstate", handleLocationChange)
-      unwrap()
+      return function() {
+        if (state.hashRouting) {
+          removeEventListener("hashchange", handleLocationChange)
+        } else {
+          removeEventListener("pushstate", handleLocationChange)
+          removeEventListener("popstate", handleLocationChange)
+          unwrap()
+        }
+      }
     }
   }
 }

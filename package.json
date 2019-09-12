@@ -1,7 +1,7 @@
 {
   "name": "@kickscondor/router",
   "description": "Declarative routing for Hyperapp V1 using the History API.",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "main": "dist/router.js",
   "module": "src/index.js",
   "typings": "index.d.ts",
@@ -45,17 +45,16 @@
     "testURL": "http://localhost"
   },
   "devDependencies": {
-    "babel-jest": "^22.4.3",
+    "babel-jest": "^24.9.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "hyperapp": "^1.2.5",
-    "jest": "^22.4.3",
-    "prettier": "^1.11.1",
-    "rollup": "^0.57.1",
-    "uglify-js": "^3.3.16",
-    "typescript": "2.8.1"
+    "babel-preset-env": "^1.7.0",
+    "hyperapp": "^1.2.9",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "rollup": "^1.21.2",
+    "uglify-js": "^3.6.0",
+    "typescript": "3.6.3"
   },
   "peerDependencies": {
-    "hyperapp": "1.2.5"
   }
 }
