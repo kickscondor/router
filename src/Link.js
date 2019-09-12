@@ -12,8 +12,11 @@ function isExternal(anchorElement) {
 
 export function Link(props, children) {
   return function(state, actions) {
-    var to = props.to
     var location = state.location
+    if (location.hashRouting)
+      return h("a", {href: '#!'+props.to}, children)
+
+    var to = props.to
     var onclick = props.onclick
     delete props.to
     delete props.location
