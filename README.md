@@ -34,12 +34,13 @@ const TopicsView = ({ match }) => (
   </div>
 )
 
+const loc = location()
 const state = {
-  location: location.state
+  location: loc.state
 }
 
 const actions = {
-  location: location.actions
+  location: loc.actions
 }
 
 const view = state => (
@@ -66,7 +67,7 @@ const view = state => (
 
 const main = app(state, actions, view, document.body)
 
-const unsubscribe = location.subscribe(main.location)
+const unsubscribe = loc.subscribe(main.location)
 ```
 
 ## Installation
@@ -85,15 +86,17 @@ If you don't want to set up a build environment, you can download Hyperapp Route
 
 ## Usage
 
-Add the `location` module to your state and actions and start the application.
+Run the `location` function, adding its returned object to your state and actions and start the application.
 
 ```jsx
+const loc = location()
+
 const state = {
-  location: location.state
+  location: loc.state
 }
 
 const actions = {
-  location: location.actions
+  location: loc.actions
 }
 
 const main = app(
@@ -107,7 +110,7 @@ const main = app(
 Then call `subscribe` to listen to location change events.
 
 ```js
-const unsubscribe = location.subscribe(main.location)
+const unsubscribe = loc.subscribe(main.location)
 ```
 
 ## Components
@@ -154,6 +157,11 @@ const RouteInfo = ({ location, match }) => (
   </div>
 )
 ```
+
+#### setup
+
+True or false. If this is the first rendering for this route, `setup` will be
+true. Useful for initializing variables when a route is visited.
 
 #### location
 

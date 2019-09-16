@@ -5,12 +5,13 @@ const wait = async ms => new Promise(resolve => setTimeout(resolve, ms))
 const click = e => e.dispatchEvent(new MouseEvent("click", { button: 0 }))
 
 let state, actions, unsubscribe
+let loc = location()
 
 beforeEach(() => {
-  state = { location: location.state }
+  state = { location: loc.state }
   actions = {
-    location: location.actions,
-    getLocation: () => state => state.location
+    location: loc.actions,
+    getLocation: () => state => state.loc
   }
   unsubscribe = null
 })
@@ -23,7 +24,7 @@ test("Transition by location.go()", async done => {
   const spy = jest.fn()
   const view = () => <Route path="/test" render={spy} />
   const main = app(state, actions, view, document.body)
-  unsubscribe = location.subscribe(main.location)
+  unsubscribe = loc.subscribe(main.location)
   await wait(0)
   expect(spy).not.toBeCalled()
   main.location.go("/test")
@@ -41,7 +42,7 @@ test("Transition by clicking Link", async done => {
     </div>
   )
   const main = app(state, actions, view, document.body)
-  unsubscribe = location.subscribe(main.location)
+  unsubscribe = loc.subscribe(main.location)
   await wait(0)
   expect(spy).not.toBeCalled()
   click(document.body.getElementsByTagName("a")[0])
@@ -64,7 +65,7 @@ test('Click Link with target="_blank"', async done => {
     </div>
   )
   const main = app(state, actions, view, document.body)
-  unsubscribe = location.subscribe(main.location)
+  unsubscribe = loc.subscribe(main.location)
   await wait(0)
   click(document.body.getElementsByTagName("a")[0])
   await wait(0)
@@ -76,7 +77,7 @@ test("Click external Link", async done => {
   const spy = jest.fn()
   const view = () => <Link to="http://example.com/" />
   const main = app(state, actions, view, document.body)
-  unsubscribe = location.subscribe(main.location)
+  unsubscribe = loc.subscribe(main.location)
   await wait(0)
   expect(main.getLocation().pathname).toEqual("/")
   click(document.body.getElementsByTagName("a")[0])
@@ -94,7 +95,7 @@ test("Transition by clicking Link including non alphanumeric characters", async 
     </div>
   )
   const main = app(state, actions, view, document.body)
-  unsubscribe = location.subscribe(main.location)
+  unsubscribe = loc.subscribe(main.location)
   await wait(0)
   expect(spy).not.toBeCalled()
   click(document.body.getElementsByTagName("a")[0])
@@ -114,7 +115,7 @@ test("Transition by rendering Redirect", async done => {
     </div>
   )
   const main = app(state, actions, view, document.body)
-  unsubscribe = location.subscribe(main.location)
+  unsubscribe = loc.subscribe(main.location)
   await wait(0)
   expect(spy).not.toBeCalled()
   main.location.go("/test")

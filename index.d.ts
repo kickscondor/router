@@ -16,6 +16,7 @@ interface Match<P> {
   params: P;
 }
 interface RenderProps<P> {
+  setup: boolean;
   location: Location;
   match: Match<P>;
 }
@@ -47,6 +48,7 @@ export function Redirect(props: RedirectProps): VNode<RedirectProps>;
 interface LocationState {
   pathname: string;
   previous: string;
+  hashRouting: boolean;
 }
 
 interface LocationActions {

@@ -28,12 +28,15 @@ function createMatch(isExact, path, url, params, query) {
 }
 
 export function parseRoute(path, url, options) {
-  var query = window.location.search.substring(1)
-  if (options.hashRouting) {
-    var qid = url.indexOf("?")
-    if (qid >= 0) {
-      query = url.substring(qid + 1)
-      url = url.substring(0, qid)
+  var query = ""
+  if (window.location.search) {
+    query = window.location.search.substring(1)
+    if (options.hashRouting) {
+      var qid = url.indexOf("?")
+      if (qid >= 0) {
+        query = url.substring(qid + 1)
+        url = url.substring(0, qid)
+      }
     }
   }
 
