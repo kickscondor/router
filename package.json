@@ -51,10 +51,11 @@
     "hyperapp": "^1.2.9",
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
-    "rollup": "^1.21.2",
-    "uglify-js": "^3.6.0",
+    "rollup": "^1.26.3",
     "typescript": "3.6.3"
   },
-  "peerDependencies": {
+  "peerDependencies": {},
+  "dependencies": {
+    "uglify-es": "^3.3.9"
   }
 }
