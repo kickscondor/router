@@ -13,34 +13,35 @@ function isExternal(anchorElement) {
 export function Link(props, children) {
   return function(state, actions) {
     var location = state.location
-    if (location.hashRouting)
-      return h("a", {href: '#!'+props.to}, children)
-
     var to = props.to
     var onclick = props.onclick
     delete props.to
     delete props.location
 
-    props.href = to
-    props.onclick = function(e) {
-      if (onclick) {
-        onclick(e)
-      }
-      if (
-        e.defaultPrevented ||
-        e.button !== 0 ||
-        e.altKey ||
-        e.metaKey ||
-        e.ctrlKey ||
-        e.shiftKey ||
-        props.target === "_blank" ||
-        isExternal(e.currentTarget)
-      ) {
-      } else {
-        e.preventDefault()
+    if (location.hashRouting) {
+      props.href = (to.startsWith('/') ? '#!' : '') + to
+    } else {
+      props.href = to
+      props.onclick = function(e) {
+        if (onclick) {
+          onclick(e)
+        }
+        if (
+          e.defaultPrevented ||
+          e.button !== 0 ||
+          e.altKey ||
+          e.metaKey ||
+          e.ctrlKey ||
+          e.shiftKey ||
+          props.target === "_blank" ||
+          isExternal(e.currentTarget)
+        ) {
+        } else {
+          e.preventDefault()
 
-        if (to !== location.pathname) {
-          history.pushState(location.pathname, "", to)
+          if (to !== location.pathname) {
+            history.pushState(location.pathname, "", to)
+          }
         }
       }
     }
